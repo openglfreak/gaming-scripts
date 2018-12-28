@@ -1,18 +1,9 @@
 #!/hint/bash
 
+. "${BASH_SOURCE%/*}/dbus.sh"
+
 __deepin_wm_wait_for_WMChanged() {
-	dbus-monitor --session --profile 'type=signal,path=/com/deepin/WMSwitcher,interface=com.deepin.WMSwitcher,member=WMChanged' |\
-		{
-			# Skip table header
-			IFS= read -r
-			IFS= read -r
-
-			# Skip NameAcquired signal
-			IFS= read -r
-
-			# Wait for one line
-			IFS= read -r
-		}
+	dbus_wait_for_signal /com/deepin/WMSwitcher com.deepin.WMSwitcher WMChanged
 }
 
 enable_wm_deepin() {
